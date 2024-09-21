@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up & Log In</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for mobile menu (optional, if needed) */
+        .menu { display: none; }
+        @media (max-width: 768px) {
+            .menu { display: block; }
+            .nav-items { display: none; }
+            .nav-items.open { display: block; }
+        }
+    </style>
+</head>
+<body class="bg-gray-400">
+    <div id="hero" class="relative bg-center bg-cover h-screen flex items-center justify-center" style="background-image: url('assets/image1.jpg');">
+        <div id="auth-container" class="bg-white bg-opacity-90 p-8 rounded-lg shadow-lg w-full max-w-md">
+            <!-- Sign Up Section -->
+            <div id="signup-section" class="auth-section">
+                <h1 class="text-3xl font-semibold mb-6 text-center">Sign Up</h1>
+                <form id="signup-form" class="space-y-4" onsubmit="return validateForm()">
+                    <div class="flex items-center border border-gray-300 rounded-md p-2">
+                        <img class="w-6 h-6 mr-2" src="./icons8-customer-30.png" alt="Name Icon">
+                        <input id="name" type="text" placeholder="Enter your name" class="w-full border-none outline-none placeholder-gray-500">
+                    </div>
+                    <div class="flex items-center border border-gray-300 rounded-md p-2">
+                        <img class="w-6 h-6 mr-2" src="./icons8-envelope-24.png" alt="Email Icon">
+                        <input id="email" type="email" placeholder="Enter your email" class="w-full border-none outline-none placeholder-gray-500">
+                    </div>
+                    <div class="flex items-center border border-gray-300 rounded-md p-2">
+                        <img class="w-6 h-6 mr-2" src="./icons8-lock-24.png" alt="Password Icon">
+                        <input id="password" type="password" placeholder="Enter your password" class="w-full border-none outline-none placeholder-gray-500">
+                    </div>
+                    <button type="submit" class="w-full py-2 bg-[#64748b] text-white font-semibold rounded-md hover:bg-gray-800">Sign Up</button>
+                </form>
+                <p class="mt-4 text-center">
+                    Already have an account? <a href="#" onclick="switchToLogin()" class="text-[#64748b] hover:underline">Log In</a>
+                </p>
+            </div>
+
+            <!-- Log In Section -->
+            <div id="login-section" class="auth-section hidden">
+                <h1 class="text-3xl font-semibold mb-6 text-center">Log In</h1>
+                <form id="login-form" class="space-y-4" onsubmit="return logIn()">
+                    <div class="flex items-center border border-gray-300 rounded-md p-2">
+                        <img class="w-6 h-6 mr-2" src="./icons8-envelope-24.png" alt="Email Icon">
+                        <input id="email-login" type="email" placeholder="Enter your email" class="w-full border-none outline-none placeholder-gray-500">
+                    </div>
+                    <div class="flex items-center border border-gray-300 rounded-md p-2">
+                        <img class="w-6 h-6 mr-2" src="./icons8-lock-24.png" alt="Password Icon">
+                        <input id="password-login" type="password" placeholder="Enter your password" class="w-full border-none outline-none placeholder-gray-500">
+                    </div>
+                    <button type="submit" class="w-full py-2 bg-[#64748b] text-white font-semibold rounded-md hover:bg-gray-800">Log In</button>
+                </form>
+                <p class="mt-4 text-center ">
+                    Don't have an account? <a href="#" onclick="switchToSignUp()" class="text-[#64748b] hover:underline">Sign Up</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const users = [];
+
+        function switchToLogin() {
+            document.getElementById('signup-section').classList.add('hidden');
+            document.getElementById('login-section').classList.remove('hidden');
+        }
+
+        function switchToSignUp() {
+             document.getElementById("name").value = "";
+             document.getElementById("email").value = "";
+             document.getElementById("password").value = "";
+
+            document.getElementById('login-section').classList.add('hidden');
+            document.getElementById('signup-section').classList.remove('hidden');
+        }
+
+        function validateForm() {
+            const name = document.getElementById("name").value;
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+
+            if (!name || !email || !password) {
+                alert("Please fill in all fields");
+                return false;
+            }
+
+            if (!/\S+@\S+\.\S+/.test(email)) {
+                alert("Please enter a valid email address");
+                return false;
+            }
+
+            // Add user to the users array
+            users.push({ name, email, password });
+            console.log(users);
+
+            // Show login section and hide sign up section
+            switchToLogin();
+
+            return false; // Prevent form submission
+        }
+
+        function logIn() {
+            const email = document.getElementById("email-login").value;
+            const password = document.getElementById("password-login").value;
+
+            if (!email || !password) {
+                alert("Please fill in all fields");
+                return false;
+            }
+
+            if (!/\S+@\S+\.\S+/.test(email)) {
+                alert("Invalid email address");
+                return false;
+            }
+
+            const user = users.find(user => user.email === email && user.password === password);
+
+            if (user) {
+                alert("Login successful");
+            } else {
+                alert("Login failed");
+            }
+
+            return false; // Prevent form submission
+        }
+    </script>
+
+    
+    
+</body>
+</html>

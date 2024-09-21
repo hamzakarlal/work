@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Center</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.0/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="scripts.js" defer></script>
+    <style>
+        .card-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.6);
+            border-radius: 0.5rem;
+        }
+        .card {
+            position: relative;
+            overflow: hidden;
+        }
+        .custom-card {
+            background-color: #fff;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+      <style>
+        .custom-bg { background-color: #f5f5f5; }
+        .custom-card { background-color: #ffffff; border-radius: 0.5rem; }
+      </style>
+    <style>
+        /* Custom styles for the sidebar */
+        .sidebar {
+            transition: transform 0.5s ease;
+        }
+        .sidebar.hidden {
+            transform: translateX(-100%);
+        }
+        .sidebar.visible {
+            transform: translateX(0);
+        }
+
+        .add_animation{
+            animation : slider 0.7s ;
+        }
+        .remove_animation{
+            animation : slider 0.7s alternate-reverse ;
+        }
+
+        @keyframes slider {
+            0%{
+                transform: translateX(-100%);
+                
+            }
+            100%{
+                transform:  translateX(0%);
+
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+    
+
+
+    <!-- Preloader -->
+    <div id="preloader" class="fixed inset-0 flex items-center justify-center bg-white z-50 transition-opacity duration-500">
+        <div role="status" class="w-12 h-12 border-4 border-t-4 border-green-600 border-solid rounded-full animate-spin"></div>
+    </div>
+
+    <!-- Main Container -->
+    <div id="app" class="pt-20">
+ <!-- Footer Bar -->
+<div id="footer-bar" class="bg-gray-900 text-white fixed bottom-0 w-full shadow-lg py-3 z-50">
+    <div class="container mx-auto flex justify-between items-center px-4 lg:px-8">
+        
+        <!-- Homepage Link -->
+        <a href="home.html" class="flex flex-col items-center transition-all duration-300 hover:text-blue-400 hover:scale-110">
+            <i class="fa-solid fa-house text-2xl mb-1"></i>
+            <span class="text-sm font-bold">Homepage</span>
+        </a>
+
+        <!-- Invite Link -->
+        <a href="home.html" class="flex flex-col items-center transition-all duration-300 hover:text-blue-400 hover:scale-110">
+            <i class="fa-solid fa-comments-dollar text-2xl mb-1"></i>
+            <span class="text-sm font-bold">Invite</span>
+        </a>
+
+        <!-- Task Center Link (Circle Nav) -->
+        <a href="home.html" class="relative circle-nav w-16 h-16 flex items-center justify-center bg-blue-500 text-white rounded-full shadow-lg transition-all duration-300 hover:bg-blue-600 hover:scale-110">
+            <i class="fa-solid fa-sack-dollar text-2xl"></i>
+            <h6 class="text-sm font-bold text-center mt-1">Task center</h6>
+        </a>
+
+        <!-- Videos Link -->
+        <a href="video.html" class="flex flex-col items-center transition-all duration-300 hover:text-blue-400 hover:scale-110">
+            <i class="fa-solid fa-hashtag text-2xl mb-1"></i>
+            <span class="text-sm font-bold">Videos</span>
+        </a>
+
+        <!-- Cash Out Link -->
+        <a href="cash.html" class="flex flex-col items-center transition-all duration-300 hover:text-blue-400 hover:scale-110">
+            <i class="fa-solid fa-money-bill-transfer text-2xl mb-1"></i>
+            <span class="text-sm font-bold">Cash out</span>
+        </a>
+    </div>
+</div>
+
+<!-- Additional Styling -->
+<style>
+    /* Footer layout style */
+    #footer-bar {
+        background-color: #1f2937; /* Dark Gray */
+        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Hover effect for footer links */
+    #footer-bar a {
+        transition: all 0.3s ease-in-out;
+    }
+    
+    #footer-bar a:hover {
+        color: #3b82f6; /* Light Blue */
+        transform: scale(1.1);
+    }
+
+    /* Circle navigation style */
+    .circle-nav {
+        background-color: #3b82f6; /* Blue */
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        position: relative;
+        transition: background-color 0.3s, transform 0.3s;
+    }
+    
+    .circle-nav:hover {
+        background-color: #2563eb; /* Darker Blue */
+        transform: scale(1.15);
+    }
+</style>
+
+
+    <!-- Page Title -->
+    <div class="fixed top-0 left-0 right-0 bg-white shadow-lg p-4 flex items-center justify-between z-10">
+        <!-- Hamburger Menu Icon -->
+        <button id="menu-toggle" class="text-white p-2 rounded-full">
+            <img class="w-[9%]" src="./hamburger.png" alt="Menu Icon" />
+        </button>
+
+        <!-- Title and Subtitle -->
+        <div>
+            <h1 class="text-xl font-semibold text-green-600 mb-1">Task Center</h1>
+            <h2 class="text-lg font-medium">Earn huge bonuses by completing tasks</h2>
+        </div>
+    </div>
+
+    <!-- Mobile Menu (initially hidden) -->
+    <!-- Sidebar -->
+    <div id="mobile-menu" class="fixed z-10 h-screen transition-all duration-1000 left-0 w-64 bg-white shadow-lg hidden">
+        <div class="p-4 border-b">
+            <h1 class="text-2xl font-bold text-green-700">MoneyEasily</h1>
+            <p class="text-gray-600">Top research community, a platform that enables you to generate income online using social media.</p>
+        </div>
+        <nav class="mt-4">
+            <ul>
+                <li><a href="home.html" class="block px-4 py-2 text-green-600 hover:bg-green-100">Homepage</a></li>
+                <li><a href="home.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Invite</a></li>
+                <li><a href="home.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Task center</a></li>
+                <li><a href="video.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Videos</a></li>
+                <li><a href="cash.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Cash out</a></li>
+            </ul>
+        </nav>
+    </div>
+
+         <!-- JavaScript for Dynamic Elements -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const preloader = document.getElementById("preloader");
+            preloader.style.opacity = 0;
+            setTimeout(() => preloader.style.display = "none", 500);
+
+            const menuToggle = document.getElementById("menu-toggle");
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            menuToggle.addEventListener('click', () => {
+               
+                mobileMenu.classList.toggle('hidden');
+                mobileMenu.classList.toggle('visible');
+                mobileMenu.classList.add('add_animation')
+
+                console.log(mobileMenu.classList.contains('add_animation'))
+ 
+            });
+        });
+    </script>
+<!-- Main Content -->
+<div class="container mx-auto px-4 mt-20">
+    <!-- Card -->
+    <div class="relative bg-gradient-to-r from-green-500 to-teal-400 mt-3 h-60 rounded-xl shadow-lg overflow-hidden transform transition duration-300 hover:scale-105">
+        <div class="absolute inset-0 bg-opacity-40 backdrop-blur-sm"></div>
+        <div class="relative p-6 text-white flex flex-col justify-between h-full">
+            <div>
+                <h1 class="text-3xl font-extrabold mb-2">Hello, User</h1>
+                <h4 class="text-lg font-light opacity-90 mb-4 flex items-center">
+                    Your statistics
+                    <i class="fa-solid fa-caret-down ml-2 transition-transform duration-300 hover:rotate-180"></i>
+                </h4>
+            </div>
+            <div class="flex justify-between space-x-8">
+                <!-- Balance Section -->
+                <div class="text-left">
+                    <h5 class="text-white text-lg font-semibold">My balance</h5>
+                    <h6 class="text-white opacity-80 text-2xl font-bold mt-2">
+                        $25.00<br>
+                        <span class="text-sm opacity-70">(PKR 5,449.64)</span>
+                    </h6>
+                </div>
+                <!-- Revenue Section -->
+                <div class="text-right">
+                    <h5 class="text-white text-lg font-semibold">Total revenue</h5>
+                    <h6 class="text-green-200 opacity-90 text-2xl font-bold mt-2">
+                        $25.00<br>
+                        <span class="text-sm opacity-70">(PKR 5,449.64)</span>
+                    </h6>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Additional Styling -->
+<style>
+    .bg-gradient-to-r {
+        background-image: linear-gradient(to right, #38a169, #2c7a7b);
+    }
+
+    /* Card hover animation */
+    .hover\:scale-105:hover {
+        transform: scale(1.05);
+    }
+
+    .backdrop-blur-sm {
+        backdrop-filter: blur(6px);
+    }
+
+    /* Icon rotate animation on hover */
+    .fa-caret-down:hover {
+        transform: rotate(180deg);
+    }
+</style>
+
+<!-- Share and Earn Section -->
+<div class="custom-card p-6 mt-6 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+    <h2 class="text-2xl font-bold">🔥 Share and make money</h2>
+    <div class="flex flex-col md:flex-row mt-6 space-y-4 md:space-y-0 md:space-x-2">
+        <input type="text" class="form-input border-2 border-gray-300 flex-1 rounded-md md:rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-300 text transition" placeholder="Share link here">
+        <button class="bg-indigo-600 text-white px-6 py-2 rounded-md md:rounded-r-md hover:bg-indigo-700 transition duration-300">Copy share link</button>
+    </div>
+    <div class="mt-6 space-y-3">
+        <p><b>1.</b> Copy and send to your friends and family.</p>
+        <p class="text-red-200"><b>2.</b> As long as the friends you invite make money on our website, you can get 10% commission as a reward.</p>
+        <p><b>3.</b> Use our sharing guide to help you invite more people.</p>
+        <p><b>4.</b> When someone clicks on your share link, you'll earn a $2 bonus.</p>
+        <p><b>5.</b> When someone signs up through your shared link, you will receive a $20 bonus.</p>
+    </div>
+</div>
+
+<!-- Additional Styling -->
+<style>
+    .bg-gradient-to-r {
+        background-image: linear-gradient(to right, #194161, #667eea);
+    }
+</style>
+
+
+        
+<!-- Quick Stats -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
+    <div class="custom-card p-6 bg-white shadow-lg rounded-lg transform transition-transform duration-300 hover:scale-105">
+        <h6 class="text-sm font-semibold text-gray-500">Clicks</h6>
+        <h3 class="text-2xl font-bold text-green-600">0</h3>
+    </div>
+    <div class="custom-card p-6 bg-white shadow-lg rounded-lg transform transition-transform duration-300 hover:scale-105">
+        <h6 class="text-sm font-semibold text-gray-500">Number of invitations</h6>
+        <h3 class="text-2xl font-bold text-yellow-600">0</h3>
+    </div>
+    <div class="custom-card p-6 bg-white shadow-lg rounded-lg transform transition-transform duration-300 hover:scale-105">
+        <h6 class="text-sm font-semibold text-gray-500">Tasks</h6>
+        <h3 class="text-2xl font-bold text-brown-600">0</h3>
+    </div>
+    <div class="custom-card p-6 bg-white shadow-lg rounded-lg transform transition-transform duration-300 hover:scale-105">
+        <h6 class="text-sm font-semibold text-gray-500">Referral rewards</h6>
+        <h3 class="text-2xl font-bold text-blue-600">$0.00</h3>
+    </div>
+</div>
+
+<!-- Social Media -->
+<div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="custom-card p-6 bg-white shadow-lg rounded-lg transform transition-transform duration-300 hover:scale-105 flex items-center space-x-4">
+        <div class="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center">
+            <!-- Placeholder for Social Media Icon -->
+            <img src="./icons8-facebook-48.png" alt="">
+        </div>
+        <div>
+            <h6 class="text-sm font-semibold text-gray-500">Facebook</h6>
+            <p class="text-lg text-gray-700">Follow us on Facebook</p>
+        </div>
+    </div>
+    <div class="custom-card p-6 bg-white shadow-lg rounded-lg transform transition-transform duration-300 hover:scale-105 flex items-center space-x-4">
+        <div class="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center">
+            <!-- Placeholder for Social Media Icon -->
+            <img src="./icons8-twitter-48.png" alt="">
+        </div>
+        <div>
+            <h6 class="text-sm font-semibold text-gray-500">Twitter</h6>
+            <p class="text-lg text-gray-700">Follow us on Twitter</p>
+        </div>
+    </div>
+    <div class="custom-card p-6 bg-white shadow-lg rounded-lg transform transition-transform duration-300 hover:scale-105 flex items-center space-x-4">
+        <div class="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center">
+            <!-- Placeholder for Social Media Icon -->
+            <img src="./icons8-instagram-48.png" alt="">
+        </div>
+        <div>
+            <h6 class="text-sm font-semibold text-gray-500">Instagram</h6>
+            <p class="text-lg text-gray-700">Follow us on Instagram</p>
+        </div>
+    </div>
+</div>
+
+
+<!-- Invitation Section -->
+<div class="custom-card p-6 mt-6 bg-white rounded-lg shadow-md">
+    <div class="flex items-center justify-between">
+        <h2 class="text-2xl font-bold text-gray-800">Your Invitations</h2>
+        <!-- Button with arrow -->
+        <a href="#" class="inline-flex items-center bg-indigo-600 text-white py-2 px-4 rounded-md font-semibold hover:bg-indigo-700 transition duration-300">
+            View All
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10.293 14.707a1 1 0 010-1.414L13.586 10H3a1 1 0 110-2h10.586l-3.293-3.293a1 1 0 111.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+            </svg>
+        </a>
+    </div>
+    <p class="text-gray-600 mt-4">See who you've invited and their statistics below. Only the 10 most recent invitees are shown.</p>
+</div>
+
+<!-- Animations and Styles -->
+<style>
+    .custom-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .custom-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .arrow-icon {
+        transition: transform 0.3s ease;
+    }
+
+    .custom-card:hover .arrow-icon {
+        transform: translateX(5px);
+    }
+</style>
+
+            <!-- Earning Options -->
+            <div class="custom-card p-6 mt-6">
+                <h1 class="text-xl font-bold">Earning $$$ can be fun!</h1>
+                <p class="text-gray-700">Making money is both simple and fun. Choose any option below and start making money in minutes.</p>
+                <a href="/referrals" class="custom-card p-3 mt-4 flex items-center">
+                    <img src="./icons8-invite-48.png" alt="Invite" class="w-24">
+                    <div class="ml-4">
+                        <h4 class="font-semibold">Invite to register</h4>
+                        <p>Earn PKR4,795.68 per invitation</p>
+                    </div>
+                </a>
+                <a href="/offercenter" class="custom-card p-3 mt-4 flex items-center">
+                    <img src="./icons8-task-completed-96.png" alt="Tasks" class="w-24">
+                    <div class="ml-4">
+                        <h4 class="font-semibold">Complete tasks</h4>
+                        <p>Start earning by completing tasks</p>
+                    </div>
+                </a>
+            </div>
+        
+            <!-- Task Section -->
+            <div class="custom-card p-4 mb-4">
+                <div class="flex justify-between items-center mb-4">
+                    <div>
+                        <p class="text-green-600 font-semibold">Task Center</p>
+                        <h1 class="text-xl font-bold">Apps and Games</h1>
+                    </div>
+                    <div class="text-right">
+                        <h5 class="text-green-400 font-bold mb-1">Completed: 0</h5>
+                        <h5 class="text-green-400 font-bold"><span class="text-sm">PKR0.00</span></h5>
+                    </div>
+                </div>
+                <p class="mb-2">The same task can only be completed once within 24 hours.</p>
+                <p class="mb-4">Click the Verify button to confirm task completion.</p>
+                <button class="bg-green-600 text-white py-2 px-4 rounded-lg shadow-md hover:bg-green-700 transition">Verify</button>
+            </div>
+        
+            <!-- Tasks List -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-[6rem] gap-4">
+                <!-- Task Card Template -->
+                <div class="custom-card p-4">
+                    <div class="flex items-start mb-3">
+                        <div class="w-1/4 mr-2">
+                            <img src="./blake-wisz-Bf_ItbkEBjI-unsplash.jpg" alt="Task Logo" class="w-full rounded-lg shadow-md">
+                        </div>
+                        <div class="w-3/4">
+                            <h5 class="text-lg font-bold text-gray-800 truncate">Task Title</h5>
+                            <span class="text-sm text-gray-600">Task description here.</span>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2 py-1 rounded">Badge</span>
+                        <h2 class="text-lg font-bold text-green-600">
+                            <button class="bg-green-100 text-green-600 py-1 px-2 rounded border border-green-600">PKR4,359.71</button>
+                        </h2>
+                    </div>
+                    <button class="bg-green-600 text-white py-2 px-4 rounded-lg shadow-md hover:bg-green-700 mt-4 transition">Earn</button>
+                </div>
+                <!-- Repeat above card block for additional tasks -->
+            </div>
+        </div>
+    </div>
+
+
+</html>

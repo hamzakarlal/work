@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Video Section</title>
+    <style>
+        .video-card:hover {
+            transform: translateY(-5px);
+            transition: transform 0.3s ease;
+        }
+        .btn-animate:hover {
+            transform: translateY(-3px) scale(1.05);
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+    <!-- Video Section -->
+    <section class="py-16">
+        <div class="container mx-auto">
+            <!-- Section Heading -->
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-gray-900">Our Featured Videos</h2>
+                <p class="text-gray-500 mt-3">Explore the latest videos from our collection</p>
+            </div>
+
+            <!-- Video Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Video Placeholder 1 -->
+                <div class="bg-white shadow-lg rounded-lg overflow-hidden video-card">
+                    <div class="aspect-w-16 aspect-h-9">
+                        <iframe class="w-full h-full" src="https://www.youtube.com/embed/placeholder1" title="Video 1" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-bold text-gray-800">Video Title 1</h3>
+                        <p class="text-gray-600 mt-2">This video covers the essential tips for improving your productivity.</p>
+                        <!-- Video Button -->
+                        <div class="mt-4">
+                            <a href="#" class="btn-animate bg-blue-500 text-white px-4 py-2 rounded-full shadow-lg hover:bg-blue-600"> Earn $15.00 (PKR3,269.78) </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Video Placeholder 2 -->
+                <div class="bg-white shadow-lg rounded-lg overflow-hidden video-card">
+                    <div class="aspect-w-16 aspect-h-9">
+                        <iframe class="w-full h-full" src="https://www.youtube.com/embed/placeholder2" title="Video 2" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-bold text-gray-800">Video Title 2</h3>
+                        <p class="text-gray-600 mt-2">Learn how to create effective marketing strategies in this video.</p>
+                        <!-- Video Button -->
+                        <div class="mt-4">
+                            <a href="#" class="btn-animate bg-blue-500 text-white px-4 py-2 rounded-full shadow-lg hover:bg-blue-600"> Earn $15.00 (PKR3,269.78) </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Video Placeholder 3 -->
+                <div class="bg-white shadow-lg rounded-lg overflow-hidden video-card">
+                    <div class="aspect-w-16 aspect-h-9">
+                        <iframe class="w-full h-full" src="https://www.youtube.com/embed/placeholder3" title="Video 3" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-bold text-gray-800">Video Title 3</h3>
+                        <p class="text-gray-600 mt-2">A deep dive into the best practices for web development.</p>
+                        <!-- Video Button -->
+                        <div class="mt-4">
+                            <a href="#" class="btn-animate bg-blue-500 text-white px-4 py-2 rounded-full shadow-lg hover:bg-blue-600"> Earn $15.00 (PKR3,269.78) </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Call to Action Button at the Bottom -->
+            <div class="mt-12 text-center">
+                <a href="#" class="bg-green-500 text-white px-8 py-4 rounded-full shadow-lg hover:bg-green-600 transition duration-300">
+                    Explore More Videos
+                </a>
+                <p class="text-gray-600 mt-6">Each of the following promotional videos can be watched, <br> and you can get corresponding rewards by watching the videos. <br> Due to the large number of users, each person can only watch 3 videos per day.</p>
+            </div>
+        </div>
+    </section>
+
+</body>
+</html>
